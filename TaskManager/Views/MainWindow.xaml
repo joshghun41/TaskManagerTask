@@ -1,0 +1,111 @@
+﻿<Window x:Class="TaskManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TaskManager" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="740" Width="525">
+    <StackPanel>
+        <ListView ItemsSource="{Binding Processes}"
+                  Height="350"
+                  SelectedIndex="{Binding Index}"
+                  SelectedItem="{Binding SelectedProcess}">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding ChangedCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+            <ListView.Template>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <Grid DockPanel.Dock="Top" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1" FontSize="14" FontWeight="DemiBold">Process id</Label>
+                            <Label Grid.Column="2" FontSize="14" FontWeight="DemiBold">Process name</Label>
+                        </Grid>
+                        <ScrollViewer>
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </DockPanel>
+                </ControlTemplate>
+            </ListView.Template>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="0,1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontSize="15" Text="{Binding Id}" Grid.Column="1"/>
+                        <TextBlock FontSize="15" Text="{Binding ProcessName}" Grid.Column="2"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+        <StackPanel  Orientation="Horizontal">
+            <Label Content="Process id:" />
+            <Label Content="{Binding SelectedProcess.Id, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel  Orientation="Horizontal">
+            <Label Content="Process name:" />
+            <Label Content="{Binding SelectedProcess.ProcessName, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel  Orientation="Horizontal">
+            <Label Content="Nonpaged memory size:" />
+            <Label Content="{Binding SelectedProcess.NonpagedSystemMemorySize64, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel  Orientation="Horizontal">
+            <Label Content="Paged memory size:" />
+            <Label Content="{Binding SelectedProcess.PagedMemorySize64, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel  Orientation="Horizontal">
+            <Label Content="Private memory size:" />
+            <Label Content="{Binding SelectedProcess.PrivateMemorySize64, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel  Orientation="Horizontal">
+            <Label Content="Virtual memory size:" />
+            <Label Content="{Binding SelectedProcess.VirtualMemorySize64, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel  Orientation="Horizontal">
+            <Label Content="Start time:" />
+            <Label Content="{Binding SelectedProcess.StartTime, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel  Orientation="Horizontal">
+            <Label Content="Threads number:" />
+            <Label Content="{Binding SelectedProcess.Threads.Count, Mode=OneWay}" />
+        </StackPanel>
+        <StackPanel  Orientation="Horizontal">
+            <Label Content="Priority:" />
+            <Label Content="{Binding SelectedProcess.PriorityClass, Mode=OneWay}" />
+          </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <ComboBox FontSize="16"  SelectedItem="{Binding SelectedPriorityClass,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                Width="150" ItemsSource="{Binding Priorities}"></ComboBox>
+            <Button FontSize="16" Margin="20,0,0,0" Padding="5,0"
+                Command="{Binding ChangePriorityCommand}">Change Priority</Button>
+            <Button Margin="20,0,0,0" FontSize="16" Padding="5,0"
+                Command="{Binding KillProcessCommand}">Kill Process</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,10">
+            <TextBox FontSize="16" Text="{Binding Filename,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="200"></TextBox>
+            <Button Padding="5,0" Margin="20,0" FontSize="16" Command="{Binding CreateCommand}">Create</Button>
+            <Button Margin="0" Padding="5,0" FontSize="16" Command="{Binding KillCommand}">Kill</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,10">
+            <TextBox FontSize="16" Text="{Binding BlackBoxText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="200"></TextBox>
+            <Button Padding="5,0" Margin="20,0" FontSize="16" Command="{Binding AddToBlackBoxCommand}">Add to black box</Button>
+            <Button Padding="5,0" Margin="0,0" FontSize="16" Command="{Binding ShowBlackBoxCommand}">Show black box</Button>
+        </StackPanel>
+        </StackPanel>
+</Window>
